@@ -40,12 +40,8 @@ Vue.filter('markify', function (val) {
 export default {
   data: function () {
     return {
-      article: '',
-      thetips: '666'
+      article: ''
     }
-  },
-  ready: function () {
-    this.$emit('autoSave')
   },
   components: {
     toolbox
