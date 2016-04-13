@@ -7,8 +7,8 @@
           <div class="pull-right">
             <button class="btn btn-sm btn-success btn-raised" @click='save'>本地缓存</button>
             <button class="btn btn-sm btn-info btn-raised" @click='read'>加载上次</button>
-            <a :href='mdDataUrl' download="index.md" class="btn btn-sm btn-info btn-raised">保存为.md格式</a>
-            <a :href='htmlDataUrl' download="index.html" class="btn btn-sm btn-info btn-raised">保存为.html格式</a>
+            <a :href='mdDataUrl' download="index.md" class="btn btn-sm btn-info btn-raised" @mouseenter='createUrl(0)'>保存为.md格式</a>
+            <a :href='htmlDataUrl' download="index.html" class="btn btn-sm btn-info btn-raised" @mouseenter='createUrl(1)'>保存为.html格式</a>
           </div>
         </div>
       </div>
@@ -47,17 +47,42 @@ export default {
       mdDataUrl: ''
     }
   },
+  ready: function () {
+    var self = this;
+    (function () {
+      var dropbox;
+      dropbox = document.getElementById("inputter");
+      dropbox.addEventListener("dragenter", dragenter, false);
+      dropbox.addEventListener("dragover", dragover, false);
+      dropbox.addEventListener("drop", drop, false);
+      function dragenter(e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+
+      function dragover(e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+
+      function drop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var dt = e.dataTransfer;
+        var files = dt.files;
+
+        var fileReader = new FileReader();
+        fileReader.readAsText(files[0], 'UTF-8');
+        fileReader.onloadend = function (e) {
+          self.article = e.target.result
+        }
+      }
+    })()
+  },
   computed: {
     outputHtml: function () {
       return marked(this.article)
-    }
-  },
-  watch: {
-    'outputHtml': function (val) {
-      this.htmlDataUrl = 'data:text/html;base64,' + btoa(val)
-    },
-    'article': function (val) {
-      this.mdDataUrl = 'data:text/html;base64,' + btoa(val)
     }
   },
   components: {
@@ -70,6 +95,21 @@ export default {
     },
     read: function () {
       this.article = localStorage.article
+    },
+    createUrl: function (mode) {
+      var self = this
+      var val = ''
+      if (mode == 0) {
+        val = self.article
+        var blobObj = new Blob([val])
+        var objectURL = URL.createObjectURL(blobObj)
+        self.mdDataUrl = objectURL
+      } else {
+        val = self.outputHtml
+        var blobObj = new Blob([val])
+        var objectURL = URL.createObjectURL(blobObj)
+        self.htmlDataUrl = objectURL
+      }
     }
   }
 }
