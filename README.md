@@ -22,8 +22,8 @@ demo传送门：[http://jrainlau.github.io/markcook](http://jrainlau.github.io/m
 
 --- 
 ### 更新历史
-- Markcook 1.1：增加了文件导出功能，可以导出`.html`或`.md`格式文件。
 - Markcook 1.2：修复了无法导出中文文件的bug，增加了拖拽导入文件的功能。
+- Markcook 1.1：增加了文件导出功能，可以导出`.html`或`.md`格式文件。
 
 
 
