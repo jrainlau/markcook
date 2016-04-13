@@ -1,4 +1,4 @@
-# Markcook 1.0--简洁、高效的markdown编辑器
+# Markcook 1.1--简洁、高效的markdown编辑器
 
 ***
 
@@ -17,5 +17,10 @@ demo传送门：[http://jrainlau.github.io/markcook](http://jrainlau.github.io/m
 - 提供本地缓存功能，防止重要内容丢失。
 
 这篇readme就是通过Markcook来编写的o(∩_∩)o 
+
+--- 
+### 更新历史
+- Markcook 1.1：增加了文件导出功能，可以导出`.html`或`.md`格式文件。
+
 
 
