@@ -15,6 +15,7 @@ demo传送门：[http://jrainlau.github.io/markcook](http://jrainlau.github.io/m
 - 提供了齐全的快捷按钮，无需查阅markdown语法即可进行排版。
 - 完全离线的单页应用，可以把gh-pages分支的文件clone下来，作为本地客户端使用。
 - 提供本地缓存功能，防止重要内容丢失。
+- 支持文件导出，编写完毕可直接保存。
 
 这篇readme就是通过Markcook来编写的o(∩_∩)o 
 
