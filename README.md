@@ -1,4 +1,4 @@
-# Markcook 1.1--简洁、高效的markdown编辑器
+# Markcook 1.2--简洁、高效的markdown编辑器
 
 ***
 
