@@ -7,6 +7,8 @@
           <div class="pull-right">
             <button class="btn btn-sm btn-success btn-raised" @click='save'>本地缓存</button>
             <button class="btn btn-sm btn-info btn-raised" @click='read'>加载上次</button>
+            <a :href='mdDataUrl' download="index.md" class="btn btn-sm btn-info btn-raised">保存为.md格式</a>
+            <a :href='htmlDataUrl' download="index.html" class="btn btn-sm btn-info btn-raised">保存为.html格式</a>
           </div>
         </div>
       </div>
@@ -40,7 +42,22 @@ Vue.filter('markify', function (val) {
 export default {
   data: function () {
     return {
-      article: ''
+      article: '',
+      htmlDataUrl: '',
+      mdDataUrl: ''
+    }
+  },
+  computed: {
+    outputHtml: function () {
+      return marked(this.article)
+    }
+  },
+  watch: {
+    'outputHtml': function (val) {
+      this.htmlDataUrl = 'data:text/html;base64,' + btoa(val)
+    },
+    'article': function (val) {
+      this.mdDataUrl = 'data:text/html;base64,' + btoa(val)
     }
   },
   components: {
