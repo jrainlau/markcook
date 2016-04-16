@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+dist/static/
+npm-debug.log
+
+dist
+node_modules
+my-projects
