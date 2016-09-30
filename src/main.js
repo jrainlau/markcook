@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import App from './App'
-/* eslint-disable no-new */
+import App from './App.vue'
+import store from '../vuex/store'
 
 new Vue({
-  el: 'body',
-  components: { App }
+  el: '#app',
+  store,
+  render: h => h(App)
 })
-

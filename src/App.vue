@@ -1,162 +1,113 @@
 <template>
-  <div id="app">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-12">
-          <toolbox></toolbox>
-          <div class="pull-right">
-            <button class="btn btn-sm btn-success btn-raised" @click='save'>本地缓存</button>
-            <button class="btn btn-sm btn-info btn-raised" @click='read'>加载上次</button>
-            <a :href='mdDataUrl' download="index.md" class="btn btn-sm btn-info btn-raised" @mouseenter='createUrl(0)'>保存为.md格式</a>
-            <a :href='htmlDataUrl' download="index.html" class="btn btn-sm btn-info btn-raised" @mouseenter='createUrl(1)'>保存为.html格式</a>
-          </div>
-        </div>
-      </div>
-      <div class="work-space row">
-        <div class="col-xs-6">
-          <div class="well">
-            <hr>
-            <textarea autofocus id="inputter" v-model="article"></textarea>
-          </div>
-        </div>
-        <div class="col-xs-6">
-          <div class="well">
-            <hr>
-            <output id="outputter" v-html="article | markify"></output>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div id="app" :class="[showMenu ? 'show-menu' : '', 'app']">
+    <sideMenu />
+    <main>
+      <navBar /> 
+      <section>
+        <inputer />
+        <outputer />
+      </section>
+    </main>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import marked from '../lib/marked'
-import toolbox from './components/toolbox'
-
-Vue.filter('markify', function (val) {
-  return marked(val)
-})
+import sideMenu from './components/sideMenu.vue'
+import navBar from './components/navBar.vue'
+import inputer from './components/inputer.vue'
+import outputer from './components/outputer.vue'
 
 export default {
-  data: function () {
-    return {
-      article: '',
-      htmlDataUrl: '',
-      mdDataUrl: ''
-    }
+  components: {
+    sideMenu,
+    navBar,
+    inputer,
+    outputer
   },
-  ready: function () {
-    var self = this;
-    (function () {
-      var dropbox;
-      dropbox = document.getElementById("inputter");
-      dropbox.addEventListener("dragenter", dragenter, false);
-      dropbox.addEventListener("dragover", dragover, false);
-      dropbox.addEventListener("drop", drop, false);
-      function dragenter(e) {
-        e.stopPropagation();
-        e.preventDefault();
+  mounted () {
+    this.$store.dispatch('loadCache')
+    
+    let self = this
+    let dropbox;
+    dropbox = document.querySelector("#inputer");
+    dropbox.addEventListener("dragenter", dragenter, false);
+    dropbox.addEventListener("dragover", dragover, false);
+    dropbox.addEventListener("drop", drop, false);
+    function dragenter(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    function dragover(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    function drop(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      let dt = e.dataTransfer;
+      let files = dt.files;
+      let fileReader = new FileReader();
+      fileReader.readAsText(files[0], 'UTF-8');
+      fileReader.onloadend = function (e) {
+        dropbox.value = e.target.result
+        self.$store.dispatch('inputText', dropbox.value)
       }
-
-      function dragover(e) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
-
-      function drop(e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var dt = e.dataTransfer;
-        var files = dt.files;
-
-        var fileReader = new FileReader();
-        fileReader.readAsText(files[0], 'UTF-8');
-        fileReader.onloadend = function (e) {
-          self.article = e.target.result
-        }
-      }
-    })()
+    }
+    
   },
   computed: {
-    outputHtml: function () {
-      return marked(this.article)
-    }
-  },
-  components: {
-    toolbox
-  },
-  methods: {
-    save: function () {
-      localStorage.article = this.article
-      swal('本地缓存成功', '请勿清空浏览器信息', 'success')
-    },
-    read: function () {
-      this.article = localStorage.article
-    },
-    createUrl: function (mode) {
-      var self = this
-      var val = ''
-      if (mode == 0) {
-        val = self.article
-        var blobObj = new Blob([val])
-        var objectURL = URL.createObjectURL(blobObj)
-        self.mdDataUrl = objectURL
-      } else {
-        val = self.outputHtml
-        var blobObj = new Blob([val])
-        var objectURL = URL.createObjectURL(blobObj)
-        self.htmlDataUrl = objectURL
-      }
+    showMenu () {
+      return this.$store.state.showMenu
     }
   }
 }
 </script>
 
-<style lang=less>
-body {
-  font-family: microsoft yahei, Helvetica, sans-serif;
-  background: #fff;
-}
+<style lang="less">
+@import url('../static/markdown.less');
 html,
-body,
-body > #app,
-body > #app > .container-fluid {
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Microsoft Yahei, "PingHei", "Helvetica Neue", "Helvetica", "STHeitiSC-Light", "Arial", sans-serif;
   height: 100%;
   overflow: hidden;
+  background-color: #e0e0e0;
 }
-#app > .container-fluid {
+.app {
   position: relative;
+  left: -220px;
   height: 100%;
-  .work-space {
-    height: 90%;
-    .col-xs-6 {
+  transition: all ease .5s;
+  &.show-menu {
+    left: 0;
+  }
+  main {
+    margin-left: 220px;
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+    section {
+      box-sizing: border-box;
       height: 100%;
-      .well {
-        height: 100%;
-        #inputter,
-        #outputter {
-          width: 100%;
-          height: 90%;
-          border: none;
-          resize: none;
-          overflow-y: auto;
-          overflow-x: hidden;
-          &::-webkit-scrollbar {
-            background-color: #eee;
-            width: 5px;
-            border-radius: 10px;
-          }
-          &::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-          }
-        }
-      }
+      padding: 10px;
+      padding-bottom: 85px;
+      display: flex;
+      justify-content: center;
     }
   }
 }
 
+*::-webkit-scrollbar {
+    display: block;
+    width: 5px;
+    background: #FAFAFA;
+}
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #E0E0E0;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: #BDBDBD;
+}
 </style>
