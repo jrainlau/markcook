@@ -6,19 +6,15 @@
 
 <script>
 	export default {
-		data () {
-			return {
-				scrollTrigger: false
-			}
-		},
 		computed: {
 			rawTxt () {
-				return this.$store.getters.textInput
+				return this.$store.getters.articleRaw
 			}
 		},
 		methods: {
 			inputting (e) {
-				this.$store.dispatch('inputText', e.target.value)
+				this.$store.dispatch('textInput', e.target.value)
+				this.$store.dispatch('saveToCache')
 			},
 			syncStroll (e) {
 				let outputer = document.querySelector('.outputer')

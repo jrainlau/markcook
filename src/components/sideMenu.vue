@@ -17,7 +17,7 @@
 					<i class="fa fa-plus"></i>
 				</button>
 			</li>
-			<li>
+			<!-- <li>
 				<button @click='saveToCache'>
 					<i class="fa fa-floppy-o"></i>
 					Save to cache
@@ -28,7 +28,7 @@
 					<i class="fa fa-book"></i>
 					Read from cache
 				</button>
-			</li>
+			</li> -->
 			<li>
 				<a :href='htmlDataUrl' :download='titleHtml' @mouseenter='createUrl("html")'>
 					<i class="fa fa-html5"></i>
@@ -58,10 +58,10 @@
 				return this.$store.getters.articleList
 			},
 			titleHtml () {
-				return this.$store.getters.textInput.split('\n')[0] + '.html'
+				return this.$store.getters.articleRaw.split('\n')[0] + '.html'
 			},
 			titleMd () {
-				return this.$store.getters.textInput.split('\n')[0] + '.md'
+				return this.$store.getters.articleRaw.split('\n')[0] + '.md'
 			}
 		},
 		methods: {
@@ -88,7 +88,7 @@
 	      let self = this
 	      let val = ''
 	      if (mode === 'md') {
-	        val = self.$store.getters.textInput
+	        val = self.$store.getters.articleRaw
 	        let blobObj = new Blob([val])
 	        let objectURL = URL.createObjectURL(blobObj)
 	        self.mdDataUrl = objectURL
@@ -98,7 +98,6 @@
 	        let objectURL = URL.createObjectURL(blobObj)
 	        self.htmlDataUrl = objectURL
 	      }
-	      // self.title = self.$store.getters.textInput.split('\n')[0]
 	    }
 		}
 	}

@@ -15,16 +15,16 @@ const createID = () => {
 
 const saveID = (state) => {
 	let idArr = []
-	for (let i = 0, len = state.textInput.length; i < len; i++) {
-		idArr.push(state.textInput[i].id)
+	for (let i = 0, len = state.articleList.length; i < len; i++) {
+		idArr.push(state.articleList[i].id)
 		localStorage.setItem('idArr', idArr.join(','))
 	}
 }
 
 export default new Vuex.Store({
 	state: {
-		showMenu: false,
-		textInput: [
+		showMenu: true,
+		articleList: [
 			{
 				id: createID(),
 				content: 'Untitled\n---\n',
@@ -37,36 +37,36 @@ export default new Vuex.Store({
 			state.showMenu === false ? state.showMenu = true : state.showMenu = false
 		},
 		TEXT_INPUT (state, txt) {
-			for (let i = 0, len = state.textInput.length; i < len; i++) {
-				if (state.textInput[i].current) {
-					state.textInput[i].content = txt
+			for (let i = 0, len = state.articleList.length; i < len; i++) {
+				if (state.articleList[i].current) {
+					state.articleList[i].content = txt
 				}
 			}
 		},
 		SAVE_TO_CACHE (state) {
-			for (let i = 0, len = state.textInput.length; i < len; i++) {
-				if (state.textInput[i].current) {
-					localStorage.setItem(state.textInput[i].id, state.textInput[i].content)
+			for (let i = 0, len = state.articleList.length; i < len; i++) {
+				if (state.articleList[i].current) {
+					localStorage.setItem(state.articleList[i].id, state.articleList[i].content)
 					saveID(state)
 				}
 			}
 		},
 		READ_FROM_CACHE (state) {
-			for (let i = 0, len = state.textInput.length; i < len; i++) {
-				if (state.textInput[i].current) {
-					state.textInput[i].content = localStorage.getItem(state.textInput[i].id)
+			for (let i = 0, len = state.articleList.length; i < len; i++) {
+				if (state.articleList[i].current) {
+					state.articleList[i].content = localStorage.getItem(state.articleList[i].id)
 				}
 			}
 		},
 		SELECT_THIS (state, index) {
-			for (let i = 0, len = state.textInput.length; i < len; i++) {
-				state.textInput[i].current = false
+			for (let i = 0, len = state.articleList.length; i < len; i++) {
+				state.articleList[i].current = false
 			}
-			state.textInput[index].current = true
+			state.articleList[index].current = true
 		},
 		NEW_ARTICLE (state) {
-			for (let i = 0, len = state.textInput.length; i < len; i++) {
-				state.textInput[i].current = false
+			for (let i = 0, len = state.articleList.length; i < len; i++) {
+				state.articleList[i].current = false
 			}
 			
 			let newOne = {
@@ -74,27 +74,28 @@ export default new Vuex.Store({
 				content: 'Untitled\n---',
 				current: true
 			}
-			state.textInput.push(newOne)
+
+			state.articleList.push(newOne)
 		},
 		DELETE_THIS (state, index) {
-			if (state.textInput.length > 1) {
+			if (state.articleList.length > 1) {
 				let idArr = localStorage.getItem('idArr').split(',')
-				let loc = idArr.indexOf(state.textInput[index].id)
+				let loc = idArr.indexOf(state.articleList[index].id)
 				idArr.splice(loc, 1)
 				localStorage.setItem('idArr', idArr)
 
-				localStorage.removeItem(state.textInput[index].id)
-				state.textInput.splice(index, 1)
+				localStorage.removeItem(state.articleList[index].id)
+				state.articleList.splice(index, 1)
 
-				for (let i = 0, len = state.textInput.length; i < len; i++) {
-					state.textInput[i].current = false
+				for (let i = 0, len = state.articleList.length; i < len; i++) {
+					state.articleList[i].current = false
 				}
-				state.textInput[0].current = true
+				state.articleList[0].current = true
 			}
 		},
 		READ_LIST_FROM_LOCAL (state) {
 			if (localStorage.getItem('idArr')) {
-				state.textInput = null
+				state.articleList = null
 				let idArr = localStorage.getItem('idArr').split(',')
 				let articleArr = []
 				for (let i = 0, len = idArr.length; i < len; i++) {
@@ -107,8 +108,8 @@ export default new Vuex.Store({
 					articlObj.content = localStorage.getItem(idArr[i])
 					articleArr.push(articlObj)
 				}
-				state.textInput = articleArr
-				state.textInput[0].current = true
+				state.articleList = articleArr
+				state.articleList[0].current = true
 			}
 		},
 		SYNC_SCROLL (state, scrollTop) {
@@ -119,7 +120,7 @@ export default new Vuex.Store({
 		showMenu ({ commit }) {
 			commit('SHOW_MENU')
 		},
-		inputText ({ commit }, txt) {
+		textInput ({ commit }, txt) {
 			commit('TEXT_INPUT', txt)
 		},
 		selectThis ({ commit }, index) {
@@ -127,6 +128,7 @@ export default new Vuex.Store({
 		},
 		newArticle ({ commit }) {
 			commit('NEW_ARTICLE')
+			commit('SAVE_TO_CACHE')
 		},
 		deleteThis ({ commit }, index) {
 			commit('DELETE_THIS', index)
@@ -142,23 +144,20 @@ export default new Vuex.Store({
 		}
 	},
 	getters: {
-		getCount: state => {
-			return state.count
-		},
-		textInput: state => {
+		articleRaw: state => {
 			let content = ''
-			for (let i = 0, len = state.textInput.length; i < len; i++) {
-				if (state.textInput[i].current) {
-					content = state.textInput[i].content
+			for (let i = 0, len = state.articleList.length; i < len; i++) {
+				if (state.articleList[i].current) {
+					content = state.articleList[i].content
 				}
 			}
 			return content
 		},
-		textOutput: (state, getters) => {
-			return marked(getters.textInput)
+		articleMd: (state, getters) => {
+			return marked(getters.articleRaw)
 		},
 		articleList: state => {
-			return state.textInput
+			return state.articleList
 		}
 	}
 })

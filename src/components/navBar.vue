@@ -1,7 +1,7 @@
 <template>
 	<nav>
 		<ul>
-			<li><button @click='addFun'><i class="fa fa-bars"></i></button></li>
+			<li><button @click='showMenu'><i class="fa fa-bars"></i></button></li>
 			<li><button @click='insert("**Bold**")'><i class="fa fa-bold"></i></button></li>
 			<li><button @click='insert("*Italic*")'><i class="fa fa-italic"></i></button></li>
 			<li><button @click='insert("[Link](http://example.com/)")'><i class="fa fa-link"></i></button></li>
@@ -36,7 +36,7 @@
 
 	export default {
 		methods: {
-			addFun () {
+			showMenu () {
 				this.$store.dispatch('showMenu')
 			},
 			insert (content) {
@@ -82,11 +82,14 @@
 						case '`code`':
 							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '`')
 							break
+						default:
+							return false
+							break
 					}
 				}
 
 				if (newContent.length) {
-					this.$store.dispatch('inputText', newContent)
+					this.$store.dispatch('textInput', newContent)
 				}
 			},
 			redirect (url) {
@@ -100,18 +103,18 @@
 	nav {
 		box-sizing: border-box;
 		position: relative;
-		height: 75px;
+		height: 45px;
 		background-color: #009688;
 		box-shadow: 4px 3px 3px #aaa;
 		z-index: 20;
 		ul {
-			height: 75px;
+			height: 45px;
 			min-width: 1000px;
 			padding: 0;
 			margin: 0;
 			list-style: none;
 			li {
-				height: 75px;
+				height: 45px;
 				float: left;
 				&:first-child {
 					border-right: 2px solid #00897B;
@@ -120,8 +123,8 @@
 					border-left: 2px solid #00897B;
 				}
 				button {
-					height: 75px;
-					width: 75px;
+					height: 45px;
+					width: 45px;
 					border: none;
 					background: none;
 					outline: none;
@@ -134,7 +137,7 @@
 					}
 					.fa {
 						color: #fff;
-						font-size: 24px;
+						font-size: 18px;
 					}
 				}
 			}

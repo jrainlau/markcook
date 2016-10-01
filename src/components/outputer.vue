@@ -11,7 +11,7 @@
     },
     computed: {
       ripeTxt () {
-        return this.$store.getters.textOutput
+        return this.$store.getters.articleMd
       }
     }
   }
