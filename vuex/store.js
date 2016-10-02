@@ -99,14 +99,14 @@ export default new Vuex.Store({
 				let idArr = localStorage.getItem('idArr').split(',')
 				let articleArr = []
 				for (let i = 0, len = idArr.length; i < len; i++) {
-					let articlObj = {
+					let articleObj = {
 						id: '',
 						content: '',
 						current: false
 					}
-					articlObj.id = idArr[i]
-					articlObj.content = localStorage.getItem(idArr[i])
-					articleArr.push(articlObj)
+					articleObj.id = idArr[i]
+					articleObj.content = localStorage.getItem(idArr[i])
+					articleArr.push(articleObj)
 				}
 				state.articleList = articleArr
 				state.articleList[0].current = true

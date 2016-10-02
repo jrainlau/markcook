@@ -17,18 +17,6 @@
 					<i class="fa fa-plus"></i>
 				</button>
 			</li>
-			<!-- <li>
-				<button @click='saveToCache'>
-					<i class="fa fa-floppy-o"></i>
-					Save to cache
-				</button>
-			</li>
-			<li>
-				<button @click='readFromCache'>
-					<i class="fa fa-book"></i>
-					Read from cache
-				</button>
-			</li> -->
 			<li>
 				<a :href='htmlDataUrl' :download='titleHtml' @mouseenter='createUrl("html")'>
 					<i class="fa fa-html5"></i>
