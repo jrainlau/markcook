@@ -34,7 +34,7 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		SHOW_MENU (state) {
-			state.showMenu === false ? state.showMenu = true : state.showMenu = false
+			state.showMenu === false ? true : false
 		},
 		TEXT_INPUT (state, txt) {
 			for (let i = 0, len = state.articleList.length; i < len; i++) {
@@ -111,9 +111,6 @@ export default new Vuex.Store({
 				state.articleList = articleArr
 				state.articleList[0].current = true
 			}
-		},
-		SYNC_SCROLL (state, scrollTop) {
-			state.scrollTop = scrollTop
 		}
 	},
 	actions: {
