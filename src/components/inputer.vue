@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<textarea id="inputer" :value='rawTxt' @input='inputting' @scroll='syncStroll' autofocus></textarea>
+		<textarea id="inputer" :value='rawTxt' @input='inputting' @scroll='syncStroll' @drop.stop.prevent='dragging' autofocus></textarea>
 	</div>
 </template>
 
@@ -11,35 +11,6 @@
 				return this.$store.getters.articleRaw
 			}
 		},
-		mounted () {
-			// enable to load a file by dragging
-	    let self = this
-	    let dropbox;
-	    dropbox = document.querySelector("#inputer");
-	    dropbox.addEventListener("dragenter", dragenter, false);
-	    dropbox.addEventListener("dragover", dragover, false);
-	    dropbox.addEventListener("drop", drop, false);
-	    function dragenter(e) {
-	      e.stopPropagation();
-	      e.preventDefault();
-	    }
-	    function dragover(e) {
-	      e.stopPropagation();
-	      e.preventDefault();
-	    }
-	    function drop(e) {
-	      e.stopPropagation();
-	      e.preventDefault();
-	      let dt = e.dataTransfer;
-	      let files = dt.files;
-	      let fileReader = new FileReader();
-	      fileReader.readAsText(files[0], 'UTF-8');
-	      fileReader.onloadend = function (e) {
-	        dropbox.value = e.target.result
-	        self.$store.dispatch('textInput', dropbox.value)
-	      }
-	    }
-		},
 		methods: {
 			inputting (e) {
 				this.$store.dispatch('textInput', e.target.value)
@@ -48,6 +19,18 @@
 			syncStroll (e) {
 				let outputer = document.querySelector('.outputer')
 				outputer.scrollTop = e.target.scrollTop
+			},
+			dragging (e) {
+				let self = this
+	      let dt = e.dataTransfer;
+	      let files = dt.files;
+	      let fileReader = new FileReader();
+	      fileReader.readAsText(files[0], 'UTF-8');
+	      fileReader.onloadend = function (e) {
+	        let value = e.target.result
+	        self.$store.dispatch('textInput', value)
+	        self.$store.dispatch('saveToCache')
+	      }
 			}
 		}
 	}
