@@ -42,6 +42,9 @@
 				</a>
 			</li>
 		</ul>
+		<div class="copy-right">
+			Copyright © 2016 Jrain Lau
+		</div>
 	</div>
 </template>
 
@@ -106,6 +109,7 @@
 <style scoped lang="less">
 	.menu {
 		box-sizing: border-box;
+		position: relative;
 		float: left;
 		height: 100%;
 		width: 220px;
@@ -218,6 +222,14 @@
 					}
 				}
 			}
+		}
+		.copy-right {
+			position: absolute;
+			bottom: 10px;
+			width: 100%;
+			font-size: 12px;
+			text-align: center;
+			color: #9E9E9E;
 		}
 	}
 </style>
