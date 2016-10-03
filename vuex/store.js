@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+const highlight = require('highlight.js')
 const marked = require('marked')
+
+marked.setOptions({
+  highlight: function (code) {
+    return highlight.highlightAuto(code).value
+  }
+})
 
 Vue.use(Vuex)
 
@@ -34,7 +41,7 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		SHOW_MENU (state) {
-			state.showMenu === false ? true : false
+			state.showMenu = state.showMenu === false ? true : false
 		},
 		TEXT_INPUT (state, txt) {
 			for (let i = 0, len = state.articleList.length; i < len; i++) {

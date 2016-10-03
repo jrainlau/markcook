@@ -26,8 +26,8 @@
 		return newContent
 	}
 
-	const upDateContent = (inputer, oldContent, newContent, startPosition, endPosition, symbol) => {
-		newContent = oldContent.substring(0, startPosition) + symbol + oldContent.substring(startPosition, endPosition) + symbol + oldContent.substring(endPosition, oldContent.length)
+	const upDateContent = (inputer, oldContent, newContent, startPosition, endPosition, symbol1, symbol2) => {
+		newContent = oldContent.substring(0, startPosition) + symbol1 + oldContent.substring(startPosition, endPosition) + symbol2 + oldContent.substring(endPosition, oldContent.length)
 		inputer.value = newContent
 		let len = newContent.length
 		inputer.setSelectionRange(len, len)
@@ -74,13 +74,19 @@
 				} else {
 					switch (content) {
 						case '**Bold**':
-							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '**')
+							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '**', '**')
 							break
 						case '*Italic*':
-							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '*')
+							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '*', '*')
 							break
 						case '`code`':
-							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '`')
+							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '`', '`')
+							break
+						case '[Link](http://example.com/)':
+							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '[', '](http://example.com/)')
+							break
+						case '![Img](http://example.com/)':
+							newContent = upDateContent(inputer, oldContent, newContent, startPosition, endPosition, '![', '](http://example.com/)')
 							break
 						default:
 							return false
