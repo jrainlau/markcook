@@ -1,32 +1,52 @@
-Markcook2.0
+Markcook, a smart and beautiful markdown editor
 ---
+![Img]('./illustration/logo.png')
 
-A smart and beautiful markdown editor.
+> [中文文档](https://segmentfault.com/a/1190000007062371?_ea=1225335)
 
-Use it in [HERE](http://jrainlau.github.io/markcook)！
+## What's Markcook?
+Markcook is a markdown editor, you can play it [HERE](http://jrainlau.github.io/markcook/)
 
-## What's new in Markcook2.0?
-As you can see, markcook is an editor for writting `markdown`.
+By now, Markcook has updated to version 2.0, which was redesigned by Google Material Design, rebuilt by VueJS 2.0 and Vuex 2.0. All the works made Markcook much more beautiful and smarter.
 
-The 2.0 version rebuilt it totally by new UI  [Google material design](https://design.google.com/) and new JS framwork [VueJS 2.0](https://vuejs.org/), which makes it much more beautiful and smarter.
+## About it's name and design
+Why it names “Markcook” and why should you choose it? For me, good food cooked by good cook, and I would like my editor could “cook” the markdown good, so I gave this name to it.
 
-Markcook2.0 allows you to open more than one markdown file, you can switch them from the side menu easily.
-![Img](https://imgly.net/img/qfy.gif)
+Google Material Design is my favorite style, not only it looks beautiful, but also makes me feel comfortable.
 
-What's more, you could open your markdown file by dragging it into Markcook's input area. After editting finished, you can save it as markdown file or html file from the side menu.
-![Img](https://imgly.net/img/qf1.gif)
+![Img]('./illustration/1.gif')
 
-The most important part of the new version is the smarter tool bar. You could insert a markdown format string such as `**Bold**` and `*Italic*`, or you could format a string to markdown -- all you need to do is to click a button from the tool bar.
-![Img](https://imgly.net/img/qf9.gif)
+As an editor, it should be easy to use. Markcook has tried its best to improve the user experience. The color is low contrast and low saturability so that your eyes wouldn’t be hurt; all your operations would be as smooth as the transition and the animation dose.
 
-You may be confused why Markcook doesn't have the "save button" like the other editor dose? The reason is that Markcook could save your input automatically when you are typing. Even thought you have close it, the next time you open Markcook, you would find that all your works are still in there!
-![Img](https://imgly.net/img/qfj.gif)
+![Img]('./illustration/2.gif')
 
-## Deep in Markcook2.0
-Thanks to [VueJS2.0](https://vuejs.org/) and [Vuex2.0](https://vuex.vuejs.org/en/index.html), Markcook was developed by components and the components are decoupled, and all the state are managed by a store -- which means it's easy to maintain and customize.
+## Features
+Thought Markcook is an online markdown editor and back-end free, it could do as good as a local application.
 
+You can open more than one markdown file and switch them conveniently from the side menu, just like Sublime Text or Atom, etc.
+
+![Img]('./illustration/3.gif')
+
+Files could be loaded by dragging.
+
+![Img]('./illustration/4.gif')
+
+You can save the article as a markdown file or a html file, the article title would be set by the string above the cutting line automatically, and the file name would be same to the title, too.
+
+![Img]('./illustration/5.gif')
+
+Using the tool bar could make you markdown editing very easy. By clicking to the button on the tool bar, you could insert a markdown string to your article, or just format a normal string to markdown.
+
+![Img]('./illustration/6.gif')
+
+Don’t ever be afraid of loosing your work while using Markcook. It could save your work to local storage automatically. Even thought you have shut down the browser, you would find all your works are still in there the next time you open Markdown by the same browser.
+
+![Img]('./illustration/7.gif')
+
+## Deep in Markcook
+Thanks to VueJS 2.0 and Vuex 2.0, Markcook was developed by components and the components are decoupled, and all the state are managed by a store — which means it’s easy to maintain and customize.
 ```
- |__ index.html
+|__ index.html
    |__ src
      |__ App.vue
      |__ components
@@ -38,22 +58,24 @@ Thanks to [VueJS2.0](https://vuejs.org/) and [Vuex2.0](https://vuex.vuejs.org/en
    |__ vuex
      |__ store.js
 ```
+The main logic was handle by store.js, and the components mostly in charge of input and output, or just showing the states. More information you could find them in the [source code](https://github.com/jrainlau/markcook/blob/2.0/vuex/store.js).
 
-## Run and build
-Install
+# Run and build
+You could run Markcook locally by cloning it.
 ```
 git clone https://github.com/jrainlau/markcook.git
 
 cd markcook && npm install
 ```
-Dev
+For developing mode:
 ```
 npm run dev
-```
-Build
-```
+For building mode:
 npm run build
 ```
+
+If you enjoy Markcook, it would be great to fork it, star it, and send issues or pull requests to it.
+Thank you very much!
 
 ## License
 MIT
