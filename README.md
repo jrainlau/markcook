@@ -67,10 +67,14 @@ git clone https://github.com/jrainlau/markcook.git
 
 cd markcook && npm install
 ```
+
 For developing mode:
 ```
 npm run dev
+```
 For building mode:
+
+```
 npm run build
 ```
 
