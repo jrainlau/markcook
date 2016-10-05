@@ -32,7 +32,6 @@
     color: #616161;
     box-shadow: 4px 5px 3px #aaa;
     white-space: normal;
-    word-break: break-all;
     overflow-y: scroll;
 	}
 </style>
