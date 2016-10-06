@@ -33,5 +33,6 @@
     box-shadow: 4px 5px 3px #aaa;
     white-space: normal;
     overflow-y: scroll;
+    word-wrap: break-word;
 	}
 </style>
