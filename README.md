@@ -4,6 +4,8 @@ Markcook, a smart and beautiful markdown editor
 
 > [中文文档](https://segmentfault.com/a/1190000007062371?_ea=1225335)
 
+> Desktop App (for windows): [markcook2.0-win32-x64.zip](https://coding.net/s/2138109d-89e4-4791-ac02-eeb2d4294b3e)
+
 ## What's Markcook?
 Markcook is a markdown editor, you can play it [HERE](http://jrainlau.github.io/markcook/)
 
