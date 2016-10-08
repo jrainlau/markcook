@@ -1,0 +1,10 @@
+{
+  "name": "markcook2.0",
+  "description": "Markcook version 2.0",
+  "author": "Jrain Lau <jrainlau@gmail.com>",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  }
+}

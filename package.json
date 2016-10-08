@@ -1,0 +1,15 @@
+{
+  "name": "markcook2.0",
+  "description": "Markcook version 2.0",
+  "author": "Jrain Lau <jrainlau@gmail.com>",
+  "private": true,
+  "main": "./app/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-packager ./app markcook2.0 --all --out ./OutApp --version 1.4.3 --overwrite --icon=./app/favicon.ico"
+  },
+  "devDependencies": {
+    "electron-packager": "^8.1.0",
+    "electron-prebuilt": "^1.4.3"
+  }
+}
