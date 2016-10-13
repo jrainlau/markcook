@@ -75,7 +75,7 @@
 			readFromCache () {
 				this.$store.dispatch('readFromCache')
 			},
-			createUrl: function (mode) {
+			createUrl (mode) {
 	      let self = this
 	      let val = ''
 	      if (mode === 'md') {
@@ -84,7 +84,7 @@
 	        let objectURL = URL.createObjectURL(blobObj)
 	        self.mdDataUrl = objectURL
 	      } else {
-	        val = self.$store.getters.textOutput
+	        val = self.$store.getters.articleMd
 	        let blobObj = new Blob([val])
 	        let objectURL = URL.createObjectURL(blobObj)
 	        self.htmlDataUrl = objectURL
