@@ -41,7 +41,7 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		SHOW_MENU (state) {
-			state.showMenu = state.showMenu === false ? true : false
+			state.showMenu = !state.showMenu
 		},
 		TEXT_INPUT (state, txt) {
 			for (let i = 0, len = state.articleList.length; i < len; i++) {
