@@ -1,8 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
 const offlinePlugin = require('offline-plugin')
-const copyWebpackPlugin = require('copy-webpack-plugin')
+const cleanWebpackPlugin = require('clean-webpack-plugin')
 const htmlWebpackPlugin = require('html-webpack-plugin')
+const copyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: './src/main.js',
@@ -78,6 +79,12 @@ if (process.env.NODE_ENV === 'production') {
       chunks: ['main'],
       chunksSortMode: 'dependency'
     }),
+    new cleanWebpackPlugin(['docs'], {
+      root: path.resolve('./')
+    }),
+    new copyWebpackPlugin([
+      { from: './img/favicon.ico', to: 'favicon.ico'}
+    ]),
     new offlinePlugin({
       Caches: {
         main: [
@@ -87,8 +94,8 @@ if (process.env.NODE_ENV === 'production') {
         additional: [':externals:']
       },
       externals: [
-        'http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css',
-        'http://cdn.bootcss.com/highlight.js/9.7.0/styles/atom-one-dark.min.css'
+        'https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css',
+        'https://cdn.bootcss.com/highlight.js/9.7.0/styles/atom-one-dark.min.css'
       ],
       ServiceWorker: {
         events: true
