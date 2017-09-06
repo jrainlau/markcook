@@ -19,20 +19,7 @@
 </template>
 
 <script>
-	const setContent = (inputer, oldContent, newContent, content, endPosition, start, end) => {
-		newContent = oldContent.substring(0, endPosition) + content + oldContent.substring(endPosition, oldContent.length)
-		inputer.value = newContent
-		inputer.setSelectionRange(endPosition + start, endPosition + content.length - end)
-		return newContent
-	}
-
-	const upDateContent = (inputer, oldContent, newContent, startPosition, endPosition, symbol1, symbol2) => {
-		newContent = oldContent.substring(0, startPosition) + symbol1 + oldContent.substring(startPosition, endPosition) + symbol2 + oldContent.substring(endPosition, oldContent.length)
-		inputer.value = newContent
-		let len = newContent.length
-		inputer.setSelectionRange(len, len)
-		return newContent
-	}
+	import { setContent, upDateContent } from './utils.js'
 
 	export default {
 		methods: {
@@ -40,10 +27,10 @@
 				this.$store.dispatch('showMenu')
 			},
 			insert (content) {
-				let inputer = document.querySelector('#inputer')
-				let startPosition = inputer.selectionStart
-				let endPosition = inputer.selectionEnd
-				let oldContent = inputer.value
+				const inputer = document.querySelector('#inputer')
+				const startPosition = inputer.selectionStart
+				const endPosition = inputer.selectionEnd
+				const oldContent = inputer.value
 				
 				inputer.focus()
 
@@ -96,6 +83,7 @@
 
 				if (newContent.length) {
 					this.$store.dispatch('textInput', newContent)
+					this.$store.dispatch('saveToCache')
 				}
 			},
 			redirect (url) {

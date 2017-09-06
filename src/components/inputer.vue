@@ -5,6 +5,8 @@
 </template>
 
 <script>
+	import { setContent, upDateContent } from './utils.js'
+
 	export default {
 		computed: {
 			rawTxt () {
@@ -17,20 +19,29 @@
 				this.$store.dispatch('saveToCache')
 			},
 			syncStroll (e) {
-				let outputer = document.querySelector('.outputer')
+				const outputer = document.querySelector('.outputer')
 				outputer.scrollTop = e.target.scrollTop
 			},
 			dragging (e) {
-				let self = this
-	      let dt = e.dataTransfer;
-	      let files = dt.files;
-	      let fileReader = new FileReader();
-	      fileReader.readAsText(files[0], 'UTF-8');
-	      fileReader.onloadend = function (e) {
-	        let value = e.target.result
-	        self.$store.dispatch('textInput', value)
-	        self.$store.dispatch('saveToCache')
-	      }
+				const self = this
+	      const files = e.dataTransfer.files;
+				const fileReader = new FileReader();
+				const inputer = document.querySelector('#inputer')
+				const startPosition = inputer.selectionStart
+				const endPosition = inputer.selectionEnd
+				const oldContent = inputer.value
+				if (files[0].type === 'text/markdown') {
+					fileReader.readAsText(files[0], 'UTF-8');
+					fileReader.onloadend = function (e) {
+						const value = e.target.result
+						self.$store.dispatch('textInput', value)
+						self.$store.dispatch('saveToCache')
+					}
+				} else if (/image/.test(files[0].type)) {
+					const newContent = setContent(inputer, oldContent, '', `![](${files[0].path})`, endPosition, 7, 1)
+					self.$store.dispatch('textInput', newContent)
+					self.$store.dispatch('saveToCache')
+				}		
 			}
 		}
 	}
