@@ -6,6 +6,7 @@
 
 <script>
 	import { setContent, upDateContent } from './utils.js'
+	import axios from 'axios'
 
 	export default {
 		computed: {
@@ -38,9 +39,22 @@
 						self.$store.dispatch('saveToCache')
 					}
 				} else if (/image/.test(files[0].type)) {
-					const newContent = setContent(inputer, oldContent, '', `![](${files[0].path})`, endPosition, 7, 1)
-					self.$store.dispatch('textInput', newContent)
-					self.$store.dispatch('saveToCache')
+					const form = new FormData()
+					form.append('img', files[0])
+					axios({
+						method: 'post',
+						url: 'http://localhost:3000/image/upload',
+						headers: {
+							'Authorization': `Bearer ${sessionStorage.token}`
+						},
+						data: form
+					}).then((res) => {
+						if (res.status === 200) {
+							const newContent = setContent(inputer, oldContent, '', `![](http://localhost:3000${res.data.path})`, endPosition, 7, 1)
+							self.$store.dispatch('textInput', newContent)
+							self.$store.dispatch('saveToCache')
+						}
+					})
 				}		
 			}
 		}

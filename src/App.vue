@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="[showMenu ? 'show-menu' : '', 'app']">
-    <sideMenu />
+    <sideBar />
     <main>
       <navBar /> 
       <section>
@@ -13,6 +13,7 @@
 
 <script>
 import sideMenu from './components/sideMenu.vue'
+import sideBar from './components/sideBar.vue'
 import navBar from './components/navBar.vue'
 import inputer from './components/inputer.vue'
 import outputer from './components/outputer.vue'
@@ -22,7 +23,8 @@ export default {
     sideMenu,
     navBar,
     inputer,
-    outputer
+    outputer,
+    sideBar
   },
   mounted () {
     this.$store.dispatch('loadCache')
