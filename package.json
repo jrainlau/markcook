@@ -3,16 +3,23 @@
   "description": "Markcook version 2.0",
   "author": "Jrain Lau <jrainlau@gmail.com>",
   "private": true,
+  "version": "2.1.0",
   "main": "electron.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "build:watch": "cross-env NODE_ENV=production webpack --watch",
     "start": "http-server ./docs -c no-cache",
-    "app": "node_modules/.bin/electron ."
+    "app": "node_modules/.bin/electron .",
+    "build:app": "ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/ node_modules/.bin/electron-builder"
+  },
+  "build": {
+    "appId": "com.jrainlau.markcook",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    }
   },
   "dependencies": {
-    "electron": "^1.7.5",
     "highlight.js": "^9.12.0",
     "marked": "^0.3.6",
     "vue": "^2.4.2"
@@ -25,6 +32,8 @@
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.4",
+    "electron": "^1.7.5",
+    "electron-builder": "^19.27.3",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.30.1",
     "less": "^2.7.2",
