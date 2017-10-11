@@ -26,7 +26,7 @@
         <section class="menu-info-input">
           <h5>Captcha</h5>
           <input type="text" v-model="signup.captchaCode">
-          <img style="width:100%;" src="${domain}/user/captcha" alt="" @click="reloadCaptcha">
+          <p @click="getCaptcha">{{captcha}}</p>
         </section>
         <section class="menu-info-input">
           <button @click="submitSignup">Signup</button>
@@ -87,7 +87,8 @@ export default {
       userInfo: null,
       token: '',
       hasSigned: true,
-      captcha: ''
+      captcha: '',
+      domain
     }
   },
   computed: {
@@ -135,9 +136,6 @@ export default {
         }
       })
     },
-    reloadCaptcha (e) {
-      e.target.setAttribute('src', `${domain}/user/captcha?r=${Math.random()}`)
-    },
     isSigned (e) {
       axios.post(`${domain}/user/signed`, {
         account: e.target.value
@@ -147,6 +145,12 @@ export default {
         }
       }).catch((e) => {
         this.hasSigned = false
+        this.getCaptcha()
+      })
+    },
+    getCaptcha () {
+      axios.get(`${domain}/user/captcha`).then((res) => {
+        this.captcha = res.data
       })
     },
     submitDoc () {
