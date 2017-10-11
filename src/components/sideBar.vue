@@ -1,26 +1,43 @@
 <template>
 	<div class="menu">
 		<h1>
-			<img src="../../img/logo.png" alt="">
+			<img src="img/logo.png" alt="">
 		</h1>
 
     <div class="menu-user" v-if="userInfo">
-      <img src="../../img/avatar.jpg" alt="" class="menu-user-avatar">
+      <img src="img/avatar.jpg" alt="" class="menu-user-avatar">
       <span>{{userInfo.account}}</span>
     </div>
 
     <div class="menu-info" v-if="!userInfo">
       <section class="menu-info-input">
         <h5>Account</h5>
-        <input type="text" v-model="login.account">
+        <input type="text" v-model="login.account" @blur="isSigned">
       </section>
       <section class="menu-info-input">
         <h5>Password</h5>
         <input type="password" v-model="login.password">
       </section>
-      <section class="menu-info-input">
-        <button @click="submitLogin">Login</button>
-      </section>
+      <div v-if="!hasSigned">
+        <section class="menu-info-input">
+          <h5>Confirm password</h5>
+          <input type="password" v-model="signup.confirmPassword">
+        </section>
+        <section class="menu-info-input">
+          <h5>Captcha</h5>
+          <input type="text" v-model="signup.captchaCode">
+          <img style="width:100%;" src="${domain}/user/captcha" alt="" @click="reloadCaptcha">
+        </section>
+        <section class="menu-info-input">
+          <button @click="submitSignup">Signup</button>
+        </section>
+      </div>
+
+      <div v-if="hasSigned">
+        <section class="menu-info-input">
+          <button @click="submitLogin">Login</button>
+        </section>
+      </div>
     </div>
 
     <div class="menu-info" v-if="userInfo">
@@ -49,6 +66,7 @@
 
 <script>
 import axios from 'axios'
+import { domain } from '../../config/index.js'
 
 export default {
   data () {
@@ -57,13 +75,19 @@ export default {
         account: '',
         password: ''
       },
+      signup: {
+        confirmPassword: '',
+        captchaCode: ''
+      },
       doc: {
         title: '',
         category: '',
         author: ''
       },
       userInfo: null,
-      token: ''
+      token: '',
+      hasSigned: true,
+      captcha: ''
     }
   },
   computed: {
@@ -76,7 +100,7 @@ export default {
   },
   methods: {
     verifyUser () {
-      axios.post('http://localhost:3000/user/verify', {
+      axios.post(`${domain}/user/verify`, {
         token: sessionStorage.token
       }).then((res) => {
         if (res.status === 200) {
@@ -84,8 +108,24 @@ export default {
         }
       })
     },
+    submitSignup () {
+      if (this.login.password === this.signup.confirmPassword) {
+        axios.post(`${domain}/user/signup`, {
+          account: this.login.account,
+          password: this.signup.confirmPassword,
+          captcha: this.signup.captchaCode
+        }).then((res) => {
+          if (!res.data.message) {
+            this.$alert('注册成功！', '', 'success')
+            this.submitLogin()
+          } else {
+            this.$alert(res.data.message, '请重新输入', 'error')
+          }
+        })
+      }
+    },
     submitLogin () {
-      axios.post('http://localhost:3000/user/login', {
+      axios.post(`${domain}/user/login`, {
         account: this.login.account,
         password: this.login.password
       }).then((res) => {
@@ -95,9 +135,23 @@ export default {
         }
       })
     },
+    reloadCaptcha (e) {
+      e.target.setAttribute('src', `${domain}/user/captcha?r=${Math.random()}`)
+    },
+    isSigned (e) {
+      axios.post(`${domain}/user/signed`, {
+        account: e.target.value
+      }).then((res) => {
+        if (res.status === 200) {
+          this.hasSigned = true
+        }
+      }).catch((e) => {
+        this.hasSigned = false
+      })
+    },
     submitDoc () {
       axios({
-        url: 'http://localhost:3000/doc/add',
+        url: `${domain}/doc/add`,
         method: 'post',
         headers: {
           'Authorization': `Bearer ${this.token}`

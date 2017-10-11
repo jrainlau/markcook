@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from '../vuex/store'
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+import sweetAlert from 'sweetalert'
 
 if (process.env.NODE_ENV === 'production') {
   OfflinePluginRuntime.install({
@@ -13,6 +14,8 @@ if (process.env.NODE_ENV === 'production') {
     }
   })
 }
+
+Vue.prototype.$alert = sweetAlert
 
 new Vue({
   el: '#app',
