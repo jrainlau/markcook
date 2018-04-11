@@ -162,6 +162,9 @@ export default new Vuex.Store({
 		},
 		articleList: state => {
 			return state.articleList
+		},
+		articleLineRaw: (state, getters) => {
+			return getters.articleRaw.split('\n')
 		}
 	}
 })

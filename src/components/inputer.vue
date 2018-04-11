@@ -1,11 +1,20 @@
 <template>
-	<div>
-		<textarea id="inputer" :value='rawTxt' @input='inputting' @scroll='syncStroll' @drop.stop.prevent='dragging' autofocus></textarea>
+	<div class="inputer-container">
+		<div class="inputer-content">
+			<textarea id="inputer" :value='rawTxt' @input='inputting' @scroll='syncStroll' @drop.stop.prevent='dragging' autofocus>
+			</textarea>
+			<line-number/>
+		</div>
 	</div>
 </template>
 
 <script>
+	import lineNumber from './lineNumber.vue';
+
 	export default {
+		components:{
+			lineNumber
+		},
 		computed: {
 			rawTxt () {
 				return this.$store.getters.articleRaw
@@ -18,14 +27,18 @@
 			},
 			syncStroll (e) {
 				let outputer = document.querySelector('.outputer')
+				let lineContainer = document.querySelector('.line-container')
+				console.log(e.target.scrollTop);
 				outputer.scrollTop = e.target.scrollTop
+				console.log(lineContainer.style.top );
+				lineContainer.style.top = -e.target.scrollTop + 'px';
 			},
 			dragging (e) {
 				let self = this
-	      let dt = e.dataTransfer;
-	      let files = dt.files;
-	      let fileReader = new FileReader();
-	      fileReader.readAsText(files[0], 'UTF-8');
+	      		let dt = e.dataTransfer;
+	      		let files = dt.files;
+	      		let fileReader = new FileReader();
+	      ileReader.readAsText(files[0], 'UTF-8');
 	      fileReader.onloadend = function (e) {
 	        let value = e.target.result
 	        self.$store.dispatch('textInput', value)
@@ -37,25 +50,34 @@
 </script>
 
 <style scoped lang="less">
-	div {
+	div.inputer-container {
+		position:relative;
 		width: 50%;
 		height: 100%;
 		margin-right: 10px;
-		textarea {
-			box-sizing: border-box;
-			height: 100%;
-			width: 100%;
-	    vertical-align: top;
-	    padding: 15px;
-	    resize: none;
-	    border: none;
-	    background-color: #f5f5f5;
-	    outline: none;
-	    font-family: inherit;
-	    font-size: 18px;
-	    color: #616161;
-	    box-shadow: 4px 5px 3px #aaa;
-	    transition: all ease .3s;
+		overflow:hidden;
+		div.inputer-content{
+			margin-left:45px;
+			height:100%;
+			textarea {
+				position:relative;
+				z-index:99999;
+				box-sizing: border-box;
+				height: 100%;
+				width: 100%;
+	    		vertical-align: top;
+	    		padding: 15px 15px 15px 10px;
+	    		resize: none;
+	    		border: none;
+	    		background-color: #f5f5f5;
+	    		outline: none;
+	    		font-family: inherit;
+	    		font-size: 18px;
+	    		color: #616161;
+	    		box-shadow: 4px 5px 3px #aaa;
+	    		transition: all ease .3s;
+	    		line-height:26px;
+			}
 		}
 	}
 </style>
