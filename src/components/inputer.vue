@@ -1,5 +1,5 @@
 <template>
-	<div class="inputer-container">
+	<div class="inputer-container" :class="{'fullscreen': fullscreen, 'preview': preview}">
 		<div class="inputer-content">
 			<textarea id="inputer" :value='rawTxt' @input='inputting' @scroll='syncStroll' @drop.stop.prevent='dragging' autofocus>
 			</textarea>
@@ -18,6 +18,12 @@
 		computed: {
 			rawTxt () {
 				return this.$store.getters.articleRaw
+			},
+			fullscreen() {
+				return this.$store.state.fullscreen;
+			},
+			preview() {
+				return this.$store.state.preview;
 			}
 		},
 		methods: {
@@ -50,6 +56,12 @@
 </script>
 
 <style scoped lang="less">
+    div.inputer-container.fullscreen{
+    	width:100%;
+    }
+	div.inputer-container.preview{
+    	display:none;
+    }
 	div.inputer-container {
 		position:relative;
 		width: 50%;
