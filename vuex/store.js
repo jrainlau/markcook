@@ -31,6 +31,8 @@ const saveID = (state) => {
 export default new Vuex.Store({
 	state: {
 		showMenu: true,
+		fullscreen: false,
+		preview: false,
 		articleList: [
 			{
 				id: createID(),
@@ -75,7 +77,7 @@ export default new Vuex.Store({
 			for (let i = 0, len = state.articleList.length; i < len; i++) {
 				state.articleList[i].current = false
 			}
-			
+
 			let newOne = {
 				id: createID(),
 				content: 'Untitled\n---',
@@ -117,6 +119,18 @@ export default new Vuex.Store({
 				}
 				state.articleList = articleArr
 				state.articleList[0].current = true
+			}
+		},
+		FULLSCREEN(state) {
+			state.fullscreen = !state.fullscreen;
+			if(state.fullscreen && state.preview) {
+				state.preview = !state.preview
+			}
+		},
+		PREVIEW(state){
+			state.preview = !state.preview;
+			if(state.fullscreen && state.preview) {
+				state.fullscreen = !state.fullscreen;
 			}
 		}
 	},
@@ -162,6 +176,9 @@ export default new Vuex.Store({
 		},
 		articleList: state => {
 			return state.articleList
+		},
+		articleLineRaw: (state, getters) => {
+			return getters.articleRaw.split('\n')
 		}
 	}
 })

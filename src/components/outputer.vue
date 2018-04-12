@@ -1,5 +1,5 @@
 <template>
-	<div class="outputer" v-html='ripeTxt'></div>
+	<div class="outputer" v-html='ripeTxt' :class="{'fullscreen': fullscreen, 'preview': preview}"></div>
 </template>
 
 <script>
@@ -12,6 +12,12 @@
     computed: {
       ripeTxt () {
         return this.$store.getters.articleMd
+      },
+      fullscreen() {
+        return this.$store.state.fullscreen;
+      },
+      preview() {
+        return this.$store.state.preview;
       }
     }
   }
@@ -35,4 +41,13 @@
     overflow-y: scroll;
     word-wrap: break-word;
 	}
+
+  div.outputer.fullscreen{
+      display:none
+  }
+
+  div.outputer.preview{
+      width:100%;
+      max-width:1200px;
+  }
 </style>

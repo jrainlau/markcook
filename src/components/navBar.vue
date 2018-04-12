@@ -1,19 +1,81 @@
 <template>
 	<nav>
 		<ul>
-			<li><button @click='showMenu'><i class="fa fa-bars"></i></button></li>
-			<li><button @click='insert("**Bold**")'><i class="fa fa-bold"></i></button></li>
-			<li><button @click='insert("*Italic*")'><i class="fa fa-italic"></i></button></li>
-			<li><button @click='insert("[Link](http://example.com/)")'><i class="fa fa-link"></i></button></li>
-			<li><button @click='insert("\n> ")'><i class="fa fa-quote-left"></i></button></li>
-			<li><button @click='insert("`code`")'><i class="fa fa-code"></i></button></li>
-			<li><button @click='insert("![Img](http://example.com/)")'><i class="fa fa-picture-o"></i></button></li>
-			<li><button @click='insert("\n- ")'><i class="fa fa-list-ul"></i></button></li>
-			<li><button @click='insert("\n# ")'><i class="fa fa-header"></i></button></li>
-			<li><button @click='insert("\n\n---\n\n")'><i class="fa fa-underline"></i></button></li>
-			<li><button @click='insert("\n\n| title | title | title |\n| --- | --- | --- |\n| item | item | item |")'><i class="fa fa-th"></i></button></li>
-			<li><button @click='redirect("https://github.com/jrainlau/markcook")'><i class="fa fa-github"></i></button></li>
-			<li><button @click='redirect("https://github.com/jrainlau/markcook/issues")'><i class="fa fa-question"></i></button></li>
+			<li>
+				<button title="Menu" @click='showMenu'>
+					<i class="fa fa-bars"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Bold" @click='insert("**Bold**")'>
+					<i class="fa fa-bold"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Italic" @click='insert("*Italic*")'>
+					<i class="fa fa-italic"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Link" @click='insert("[Link](http://example.com/)")'>
+					<i class="fa fa-link"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Quote" @click='insert("\n> ")'>
+					<i class="fa fa-quote-left"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Code" @click='insert("`code`")'>
+					<i class="fa fa-code"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Image" @click='insert("![Img](http://example.com/)")'>
+					<i class="fa fa-picture-o"></i>
+				</button>
+			</li>
+			<li>
+				<button title="List" @click='insert("\n- ")'>
+					<i class="fa fa-list-ul"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Headline" @click='insert("\n# ")'>
+					<i class="fa fa-header"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Underline" @click='insert("\n\n---\n\n")'>
+					<i class="fa fa-underline"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Table" @click='insert("\n\n| title | title | title |\n| --- | --- | --- |\n| item | item | item |")'>
+					<i class="fa fa-th"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Fullscreen" @click='showFullscreen' :class="{'active': fullscreen}">
+					<i class="fa fa-arrows-alt"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Preview" @click='showPreview' :class="{'active': preview}">
+					<i class="fa fa-columns"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Github" @click='redirect("https://github.com/jrainlau/markcook")'>
+					<i class="fa fa-github"></i>
+				</button>
+			</li>
+			<li>
+				<button title="Question" @click='redirect("https://github.com/jrainlau/markcook/issues")'>
+					<i class="fa fa-question"></i>
+				</button>
+			</li>
 		</ul>
 	</nav>
 </template>
@@ -35,6 +97,14 @@
 	}
 
 	export default {
+		computed: {
+			fullscreen() {
+        		return this.$store.state.fullscreen;
+      		},
+      		preview() {
+        		return this.$store.state.preview;
+      		}
+		},
 		methods: {
 			showMenu () {
 				this.$store.dispatch('showMenu')
@@ -44,7 +114,7 @@
 				let startPosition = inputer.selectionStart
 				let endPosition = inputer.selectionEnd
 				let oldContent = inputer.value
-				
+
 				inputer.focus()
 
 				let newContent = ''
@@ -100,6 +170,12 @@
 			},
 			redirect (url) {
 				window.open(url, '_blank')
+			},
+			showFullscreen(){
+				this.$store.commit('FULLSCREEN')
+			},
+			showPreview(){
+				this.$store.commit('PREVIEW')
 			}
 		}
 	}
@@ -135,6 +211,9 @@
 					background: none;
 					outline: none;
 					transition: all ease .3s;
+					&.active{
+						background: #00796B;
+					}
 					&:hover {
 						background: #00897B;
 					}
